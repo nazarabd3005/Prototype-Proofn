@@ -6,17 +6,17 @@ public class Endpoint {
     //region Auth
 
     public class AUTH {
-        public static final String LOGIN = "Auth/login";
+        public static final String LOGIN = "auth/login";
     }
 
     //endregion
-    //region Messages
+    //region Message
 
     public  class MESSAGES {
-        public static final String SEND = "Messages/send";
-        public static final String INBOX = "Messages/inbox";
-        public static final String INBOX_DETAIL = "Messages/inbox/"; //do follow with {id}
-        public static final String INBOX_TRASH = "Messages/inbox/"; //do follow with {id}/trash
+        public static final String SEND = "messages/send";
+        public static final String INBOX = "messages/inbox";
+        public static final String INBOX_DETAIL = "messages/inbox/"; //do follow with {id}
+        public static final String INBOX_TRASH = "messages/inbox/"; //do follow with {id}/trash
     }
     //endregion
 

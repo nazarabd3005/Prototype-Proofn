@@ -1,9 +1,7 @@
 package com.nazar.prototypeproofn.rest;
 import com.nazar.prototypeproofn.models.Auth;
-import com.nazar.prototypeproofn.models.Messages;
+import com.nazar.prototypeproofn.models.Message;
 import com.nazar.prototypeproofn.models.User;
-
-import java.util.ArrayList;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -20,34 +18,29 @@ import retrofit2.http.Path;
 
 public interface RestConnect {
     @Headers({"Content-Type: application/json"})
-    @FormUrlEncoded
     @POST(Endpoint.AUTH.LOGIN)
-    Call<Auth.Request> login(@Body Auth.Request data);
+    Call<Auth.Response> login(@Body Auth.Request data);
 
 
     //region messages
     @Headers({"Accept: application/json"})
-    @FormUrlEncoded
-    @POST(Endpoint.MESSAGES.INBOX)
-    Call<ArrayList<Messages.Response>> inboxList(@Header("Authorization") String token,
-                                      @Body String data);
+    @GET(Endpoint.MESSAGES.INBOX)
+    Call<Message.ResponseList> inboxList(@Header("Authorization") String token);
 
     @Headers({"Accept: application/json"})
     @GET(Endpoint.MESSAGES.INBOX_DETAIL+"{id}")
-    Call<Messages.Response> inboxDetail(@Header("Authorization") String token,
-                                             @Path("id") String id);
+    Call<Message.Response> inboxDetail(@Header("Authorization") String token,
+                                       @Path("id") String id);
 
     @Headers({"Accept: application/json"})
-    @FormUrlEncoded
     @POST(Endpoint.MESSAGES.INBOX_TRASH+"{id}/trash")
-    Call<Messages.Response> inboxDelete(@Header("token") String token,
-                                                      @Body String data);
+    Call<Message.Response> inboxDelete(@Header("Authorization") String token,
+                                       @Path("id") String id);
 
     @Headers({"Accept: application/json"})
-    @FormUrlEncoded
     @POST(Endpoint.MESSAGES.SEND)
-    Call<Messages.Response> sendMessage(@Header("token") String token,
-                                        @Body Messages.RequestSend data);
+    Call<Message.Response> sendMessage(@Header("Authorization") String token,
+                                       @Body Message.RequestSend data);
 
 
     //endregion
@@ -55,19 +48,20 @@ public interface RestConnect {
     //region user
     @Headers({"Accept: application/json"})
     @Multipart
-    @POST(Endpoint.MESSAGES.INBOX_TRASH+"{id}/trash")
-    Call<User.Response> uploadAvatar(@Header("token") String token,
-                                                   @Part MultipartBody.Part file, @Part("name") RequestBody requestBody);
+    @POST(Endpoint.USER.avatar)
+    Call<User.Response> uploadAvatar(@Header("Authorization") String token,
+                                     @Part MultipartBody.Part file,
+                                     @Part("avatar") RequestBody requestBody);
 
 
     @Headers({"Accept: application/json"})
     @GET(Endpoint.USER.Profile)
-    Call<User.Response> userProfile(@Header("token") String token);
+    Call<User.Response> userProfile(@Header("Authorization") String token);
 
     @Headers({"Accept: application/json"})
     @FormUrlEncoded
     @POST(Endpoint.USER.Profile)
-    Call<User.Response> updateProfile(@Header("token") String token,@Body User user);
+    Call<User.Response> updateProfile(@Header("Authorization") String token,@Body User user);
 
     //endregion
 

@@ -15,6 +15,7 @@ public class RestService {
     private static final long READ_TIMEOUT = 60 * 60 * 1000;
     private static final long WRITE_TIMEOUT = 60 * 60 * 1000;
     private RestConnect restConnect;
+    private RestConnect restConnectNoClient;
     private HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
     public GsonBuilder gson;
 
@@ -41,6 +42,18 @@ public class RestService {
             restConnect = retrofit.create(RestConnect.class);
         }
         return restConnect;
+    }
+
+    public RestConnect getConnectionWithNoTimeout(){
+        if (restConnectNoClient == null){
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Endpoint.getBaseDomain())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            restConnectNoClient = retrofit.create(RestConnect.class);
+        }
+
+        return restConnectNoClient;
     }
     private OkHttpClient getClient() {
         return new OkHttpClient.Builder()
